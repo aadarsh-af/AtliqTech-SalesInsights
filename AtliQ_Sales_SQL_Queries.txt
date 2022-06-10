@@ -1,5 +1,3 @@
--- These SQL Queries are for the sql file: db_dump.sql
-
 select *
 from customers;
 
@@ -35,7 +33,7 @@ where trans.year = 2020;
 
 -- Total Revenue generated in the year 2020?
 -- We join the transactions table with date table
-select SUM(trans.sales_amount)
+select SUM(trans.sales_amount) as Revenue, year
 from (select *
 from transactions t
 inner join date d
@@ -62,3 +60,21 @@ on trans.market_code = m.markets_code);
 select SUM(sales_amount) as total_sales, year, markets_name
 from market_date_trans
 where markets_name = 'Chennai' and year = 2020;
+
+
+
+
+select *
+from transactions
+where sales_amount <= 0;
+
+
+
+
+select SUM(sales_amount)
+from market_date_trans
+where cy_date like '2020-01%';
+
+
+select *
+from market_date_trans;
