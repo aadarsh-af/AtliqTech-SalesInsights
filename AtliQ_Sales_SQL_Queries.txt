@@ -1,0 +1,64 @@
+-- These SQL Queries are for the sql file: db_dump.sql
+
+select *
+from customers;
+
+select *
+from date;
+
+select *
+from markets;
+
+select *
+from products;
+
+select *
+from transactions;
+
+
+select *
+from transactions
+limit 5;
+
+
+
+
+-- How many transactions were performed in the year 2020?
+-- We join the transactions table with date table
+select count(*)
+from (select *
+from transactions t
+inner join date d
+on t.order_date = d.date) trans
+where trans.year = 2020;
+
+
+-- Total Revenue generated in the year 2020?
+-- We join the transactions table with date table
+select SUM(trans.sales_amount)
+from (select *
+from transactions t
+inner join date d
+on t.order_date = d.date) trans
+where trans.year = 2020;  -- change year to see the rest
+
+
+
+
+------------------- How much Revenue did we generate in the year 2020, specifically in Chennai?
+-- We join the transactions table with date and markets tables
+-- We save the joined_with_date table into new table
+
+create table market_date_trans as
+(select *
+from (select *
+from transactions t
+inner join date d
+on t.order_date = d.date) trans
+inner join markets m
+on trans.market_code = m.markets_code);
+
+
+select SUM(sales_amount) as total_sales, year, markets_name
+from market_date_trans
+where markets_name = 'Chennai' and year = 2020;
